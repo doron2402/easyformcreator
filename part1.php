@@ -5,7 +5,7 @@
 
 	Form:
 	Title
-	File upload, 
+	File, 
 */
 
 $Site = array("Title" => 'Easy Form Creator','Headline' => 'Easy Form Creator');
@@ -36,16 +36,32 @@ function Save(Id)
 			$("#DropBoard p").each(function()
 			{
 				InputDivId.push($(this).attr("id"));
-				$('#Step3').html($(this).attr("id"));
+				//$('#Step3').html($(this).attr("id"));
 			});
 			//alert(InputDivId[0]);
 			var Headline = $('input[name$="FormTitle"]').val();
 			var HeadlineText = $('input[name$="FormPre"]').val();
 			$('#Step3').append("<h1>" + Headline + "</h1>");
-			$('#Step3').append("<summary>" + HeadlineText + "</summary>");
-			
+			$('#Step3').append("<summary>" + HeadlineText + "</summary><br />");
+			$('#Step3').append('<form id="form1">');
+				for(var i = 0, len = InputDivId.length; i < len; ++i) 
+				{
+					var div = '#' + InputDivId[i];
+					var input_type = $(div).text();
+					$('#Step3').append('<label>' + input_type + ' :</label><input type="' + input_type + '" id="' + InputDivId[i] + '" /><br />');
+				}
+			$('#Step3').append('<input type="submit" name="submit" value="submit" />');
+			$('#Step3').append("</form>");
+			$('#Step3').append('<button onClick="GetCode();">Get Code</button>');
 			$('#Step3').fadeIn('slow');
 	}
+}
+
+//Get form code
+function GetCode()
+{
+	var myHTML = document.getElementById('form1').innerHTML;
+	document.getElementById('Code').innerHTML = myHTML;
 }
 
 //Drug and Drop
@@ -73,24 +89,24 @@ function AddMore(Id)
 	{
 		case 0:
 			$('#InputTypeChose').show();
-			$('#InputTypeChose').html('<p onClick="AddMore(1);">Text Input</p><p onClick="AddMore(2);">Password Input</p><p onClick="AddMore(3);">File upload Input</p><br /><br />');
+			$('#InputTypeChose').html('<p onClick="AddMore(1);">Text</p><p onClick="AddMore(2);">Password</p><p onClick="AddMore(3);">File</p><br /><br />');
 			break;
 		case 1:
 			$('#InputTypeChose').fadeOut();
 			$('#InputTypeChose').hide();
-			$('#InputType').append('<p id="drag' + Input_Counter +'" draggable="true" ondragstart="drag(event)">Text input</p>');
+			$('#InputType').append('<p id="drag' + Input_Counter +'" draggable="true" ondragstart="drag(event)">Text</p>');
 			Input_Counter++;
 			break;
 		case 2:
 			$('#InputTypeChose').fadeOut();
 			$('#InputTypeChose').hide();
-			$('#InputType').append('<p id="drag' + Input_Counter +'" draggable="true" ondragstart="drag(event)">Password input</p>');
+			$('#InputType').append('<p id="drag' + Input_Counter +'" draggable="true" ondragstart="drag(event)">Password</p>');
 			Input_Counter++;
 			break;
 		case 3:
 			$('#InputTypeChose').fadeOut();
 			$('#InputTypeChose').hide();
-			$('#InputType').append('<p id="drag' + Input_Counter +'" draggable="true" ondragstart="drag(event)">File Upload</p>');
+			$('#InputType').append('<p id="drag' + Input_Counter +'" draggable="true" ondragstart="drag(event)">File</p>');
 			Input_Counter++;			
 			break;
 	}
@@ -124,16 +140,16 @@ p{cursor:pointer;}
 				<p>Choose your Fields</p>
 				<a onClick="Save(2);">Continue</a>
 				<div id="DropBoard" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-				<p onClick="AddMore(0);" draggable="false">Add More Fileds</p>
+				<p onClick="AddMore(0);" draggable="false">Add More Fields</p>
 				<div id="InputTypeChose"></div>
 				<div id="InputType">
-					<p id="drag1" draggable="true" ondragstart="drag(event)">Text input</p>
-					<p id="drag2" draggable="true" ondragstart="drag(event)">Password input</p>
-					<p id="drag3" draggable="true" ondragstart="drag(event)">File Upload input</p>
+					<p id="drag1" draggable="true" ondragstart="drag(event)">Text</p>
+					<p id="drag2" draggable="true" ondragstart="drag(event)">Password</p>
+					<p id="drag3" draggable="true" ondragstart="drag(event)">File</p>
 				</div>
 			</div>
-			<div id="Step3" style="display:none;">
-			</div>
+			<div id="Step3" style="display:none;"></div>
+			<div id="Code"></div>
 		</div>
 		<div id="footer"></div>
 	</div>
